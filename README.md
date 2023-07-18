@@ -1,6 +1,6 @@
 # MoonFood
 
-MoonFood is a Food Ordering Web Application built using ASP.NET Core 7.0 and Entity Framework, with SQL Server as the database. It provides a convenient platform for users to browse menus, place orders, and make payments online.
+MoonFood is a Food Ordering Web Application built using ASP.NET Core 7.0 and Entity Framework, with SQL Server and PostgreSQL as the database. It provides a convenient platform for users to browse menus, place orders, and make payments online.
 
 ## System Requirements
 - .NET 7.0 SDK
