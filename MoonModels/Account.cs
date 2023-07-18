@@ -1,6 +1,4 @@
-﻿
-
-namespace MoonModels
+﻿namespace MoonModels
 {
     public class Account : BaseModel
     {

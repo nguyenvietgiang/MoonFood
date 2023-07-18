@@ -47,9 +47,6 @@ builder.Services.AddSwaggerGen(c =>
             new string[] { }
         }
     });
-    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    c.IncludeXmlComments(xmlPath);
 });
 
 builder.Services.AddDbContext<DataContext>(options =>
@@ -57,7 +54,7 @@ options.UseNpgsql(builder.Configuration.GetConnectionString("ApiCodeFirst")));
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
-builder.Services.AddScoped<IBaseRepository, BaseRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 
 
 builder.Services.AddCors(options =>
@@ -93,14 +90,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseStaticFiles();
-
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(
-            Path.Combine(Directory.GetCurrentDirectory(), "MoonBussiness/FileUploads")),
-    RequestPath = "/uploads"
-});
 
 app.UseCors(MyAllowSpecificOrigins);
 
