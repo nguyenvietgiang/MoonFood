@@ -17,6 +17,11 @@ namespace MoonBussiness.CommonBussiness
                  .ForMember(dest => dest.Tables, opt => opt.Ignore());
 
             CreateMap<Account, AccountResponse>();
+
+            
+            CreateMap<LoginRequest, Account>();
+            CreateMap<Account, LoginResponse>();
+
         }
     }
 }

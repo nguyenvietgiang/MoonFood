@@ -4,6 +4,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MoonBussiness.CommonBussiness;
+using MoonBussiness.CommonBussiness.Auth;
 using MoonBussiness.Interface;
 using MoonBussiness.Repository;
 using MoonDataAccess;
@@ -47,6 +48,9 @@ builder.Services.AddSwaggerGen(c =>
             new string[] { }
         }
     });
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
 });
 
 builder.Services.AddDbContext<DataContext>(options =>
@@ -55,7 +59,7 @@ options.UseNpgsql(builder.Configuration.GetConnectionString("ApiCodeFirst")));
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
-
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddCors(options =>
 {

@@ -1,9 +1,8 @@
-﻿
-
+﻿using Microsoft.AspNetCore.JsonPatch;
 using MoonModels;
 using MoonModels.DTO.RequestDTO;
-using MoonModels.DTO.ResponseDTO;
-using MoonModels.Paging;
+using MoonModels.DTO.ResponseDTO; 
+using MoonModels.Paging; 
 
 namespace MoonBussiness.Interface
 {
@@ -13,8 +12,13 @@ namespace MoonBussiness.Interface
         Task<AccountResponse> GetByName(string name);
         Task<AccountResponse> GetById(Guid id);
         Task<AccountResponse> Add(CreateAccountRequest accountRequest);
-        Task<AccountResponse> Update(Account account);
         Pagination<AccountResponse> GetAllAccount(int currentPage, int pageSize);
+        AccountResponse PatchAccount(Guid id, JsonPatchDocument<Account> patchDocument);
         Task DeleteAccount(Guid id);
+        LoginResponse Login(LoginRequest loginRequest);
+         
+        bool ChangePassword(Guid Id, ChangePassword model);
+        Task<bool> ChangeAccountTypeById(Guid id, string newType);
+        Task<bool> ToggleAccountStatus(Guid id);
     }
 }
