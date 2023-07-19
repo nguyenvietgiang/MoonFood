@@ -20,7 +20,7 @@ namespace MoonFood.Controllers
         }
 
         /// <summary>
-        /// user login to app 
+        /// user login to app - no auth
         /// </summary>
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest loginRequest)
@@ -172,6 +172,52 @@ namespace MoonFood.Controllers
                 return Ok("Account Status toggled successfully.");
             }
             return NotFound("Account not found.");
+        }
+
+        /// <summary>
+        /// reset new password - no auth
+        /// </summary>
+        [HttpPost("resetpassword")]
+        public async Task<IActionResult> ResetPassword([FromBody] string email)
+        {
+            var account = await _accountRepository.GetByEmail(email);
+            if (account == null)
+            {
+                return BadRequest("Invalid Email.");
+            }
+            bool isResetSuccessful = await _accountRepository.ResetPasswordAsync(email);
+            if (isResetSuccessful)
+            {
+                return Ok("Reset password code is send to your email.");
+            }
+            else
+            {
+                return BadRequest("Reset password successfully..");
+            }
+        }
+
+        /// <summary>
+        /// delelte many account - Manager
+        /// </summary>
+        [HttpPost("deleteaccounts")]
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> DeleteAccounts([FromBody] List<Guid> accountIds)
+        {
+            if (accountIds == null || accountIds.Count == 0)
+            {
+                return BadRequest("List account invalid.");
+            }
+
+            int deletedCount = await _accountRepository.DeleteAccountsAsync(accountIds);
+
+            if (deletedCount > 0)
+            {
+                return Ok($"Deleted {deletedCount} account.");
+            }
+            else
+            {
+                return BadRequest("Wrong Account Id.");
+            }
         }
     }
 }

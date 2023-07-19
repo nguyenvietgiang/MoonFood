@@ -15,8 +15,9 @@ namespace MoonBussiness.Interface
         Pagination<AccountResponse> GetAllAccount(int currentPage, int pageSize);
         AccountResponse PatchAccount(Guid id, JsonPatchDocument<Account> patchDocument);
         Task DeleteAccount(Guid id);
+        Task<int> DeleteAccountsAsync(List<Guid> accountIds);
         LoginResponse Login(LoginRequest loginRequest);
-         
+        Task<bool> ResetPasswordAsync(string email);
         bool ChangePassword(Guid Id, ChangePassword model);
         Task<bool> ChangeAccountTypeById(Guid id, string newType);
         Task<bool> ToggleAccountStatus(Guid id);

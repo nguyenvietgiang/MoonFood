@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using MoonBussiness.CommonBussiness.Auth;
 using MoonBussiness.Interface;
 using MoonDataAccess;
@@ -16,11 +17,13 @@ namespace MoonBussiness.Repository
         protected readonly DataContext _context;
         private readonly IMapper _mapper;
         private readonly IAuthService _authService;
-        public AccountRepository(DataContext context, IMapper mapper, IAuthService authService)
+        private readonly IEmailRepository _emailRepository;
+        public AccountRepository(DataContext context, IMapper mapper, IAuthService authService, IEmailRepository emailRepository)
         {
             _context = context;
-            _mapper= mapper;
-            _authService= authService;
+            _mapper = mapper;
+            _authService = authService;
+            _emailRepository = emailRepository;
         }
 
         public async Task<AccountResponse> Add(CreateAccountRequest accountRequest)
@@ -162,6 +165,53 @@ namespace MoonBussiness.Repository
             account.UpdatedAt = DateTime.UtcNow;
             _context.SaveChanges();
             return true;
+        }
+
+        public async Task<bool> ResetPasswordAsync(string email)
+        {
+            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.Email == email);
+            if (account == null)
+                return false;
+
+            string newPassword = GenerateRandomPassword();
+            string hashedNewPassword = _authService.HashPassword(newPassword);
+
+            account.Password = hashedNewPassword;
+            account.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+
+            // Gửi email chứa mật khẩu mới đến địa chỉ email của tài khoản
+            string emailContent = $"Your new password is: {newPassword}";
+            await _emailRepository.SendEmailAsync(email, emailContent);
+
+            return true;
+        }
+
+        private string GenerateRandomPassword()
+        {
+            const int passwordLength = 6;
+            const string allowedChars = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789";
+            var random = new Random();
+            var password = new char[passwordLength];
+            for (int i = 0; i < passwordLength; i++)
+            {
+                password[i] = allowedChars[random.Next(0, allowedChars.Length)];
+            }
+            return new string(password);
+        }
+
+        public async Task<int> DeleteAccountsAsync(List<Guid> accountIds)
+        {
+            var accountsToDelete = await _context.Accounts.Where(a => accountIds.Contains(a.Id)).ToListAsync();
+
+            if (accountsToDelete.Count > 0)
+            {
+                _context.Accounts.RemoveRange(accountsToDelete);
+                return await _context.SaveChangesAsync();
+            }
+
+            return 0;
         }
     }
 }
