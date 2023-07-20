@@ -219,5 +219,20 @@ namespace MoonFood.Controllers
                 return BadRequest("Wrong Account Id.");
             }
         }
+
+        /// <summary>
+        /// get new token by refesh token
+        /// </summary>
+        [HttpPost("new-token")]
+        public IActionResult RefreshToken([FromBody] string refreshToken)
+        {
+            string newAccessToken = _accountRepository.RefreshAccessToken(refreshToken);
+
+            if (newAccessToken == null)
+            {
+                return BadRequest("Invalid or expired refresh token");
+            }
+            return Ok(new { AccessToken = newAccessToken });
+        }
     }
 }

@@ -6,7 +6,7 @@
         public string? Email { get; set; }
         public string? Password { get; set; }
         public AccountType Type { get; set; }
-        public List<Table> Tables { get; set; } 
+        public List<Booking> Bookings { get; set; }
     }
 
     public enum AccountType

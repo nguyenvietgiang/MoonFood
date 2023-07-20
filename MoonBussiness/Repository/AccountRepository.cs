@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 using MoonBussiness.CommonBussiness.Auth;
 using MoonBussiness.Interface;
 using MoonDataAccess;
@@ -98,9 +97,12 @@ namespace MoonBussiness.Repository
                 return null;
             }    
             string token = _authService.GenerateJwtToken(account);
+            string refreshToken = _authService.GenerateRefreshToken();
+            SaveRefreshToken(account.Id, refreshToken);
 
             LoginResponse loginResponse = _mapper.Map<LoginResponse>(account);
             loginResponse.Token = token;
+            loginResponse.RefreshToken = refreshToken;
             return loginResponse;
         }
 
@@ -212,6 +214,42 @@ namespace MoonBussiness.Repository
             }
 
             return 0;
+        }
+
+        private void SaveRefreshToken(Guid userId, string refreshToken)
+        {
+            var expiresAt = DateTime.UtcNow.AddDays(7); // Thời gian hết hạn của refresh token
+
+            var refreshTokenEntity = new RefreshToken
+            {
+                Token = refreshToken,
+                ExpiresAt = expiresAt,
+                UserId = userId,
+            };
+
+            _context.RefreshTokens.Add(refreshTokenEntity);
+            _context.SaveChanges();
+        }
+
+        public string RefreshAccessToken(string refreshToken)
+        {
+            var refreshTokenEntity = _context.RefreshTokens.FirstOrDefault(rt => rt.Token == refreshToken);
+
+            if (refreshTokenEntity == null || refreshTokenEntity.ExpiresAt < DateTime.Now)
+            {
+                return null; 
+            }
+
+            var account = _context.Accounts.FirstOrDefault(u => u.Id == refreshTokenEntity.UserId);
+
+            if (account == null)
+            {
+                return null; 
+            }
+
+            string newAccessToken = _authService.GenerateJwtToken(account);
+
+            return newAccessToken;
         }
     }
 }

@@ -13,15 +13,20 @@ namespace MoonBussiness.CommonBussiness
             CreateMap<CreateAccountRequest, Account>()
                  .ForMember(dest => dest.Id, opt => opt.Ignore())
                  .ForMember(dest => dest.Status, opt => opt.MapFrom(src => true))
-                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => AccountType.User))
-                 .ForMember(dest => dest.Tables, opt => opt.Ignore());
+                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => AccountType.User));
 
             CreateMap<Account, AccountResponse>();
 
-            
             CreateMap<LoginRequest, Account>();
             CreateMap<Account, LoginResponse>();
 
+            CreateMap<TableRequest, Table>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => true));
+
+            CreateMap<BookingRequest, Booking>()
+               .ForMember(dest => dest.Id, opt => opt.Ignore())
+               .ForMember(dest => dest.Status, opt => opt.MapFrom(src => true));
         }
     }
 }

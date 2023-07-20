@@ -21,5 +21,6 @@ namespace MoonBussiness.Interface
         bool ChangePassword(Guid Id, ChangePassword model);
         Task<bool> ChangeAccountTypeById(Guid id, string newType);
         Task<bool> ToggleAccountStatus(Guid id);
+        string RefreshAccessToken(string refreshToken);
     }
 }

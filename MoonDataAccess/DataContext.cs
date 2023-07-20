@@ -23,5 +23,7 @@ namespace MoonDataAccess
         public DbSet<Combo> Combos { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
     }
 } 

@@ -7,5 +7,6 @@ namespace MoonBussiness.CommonBussiness.Auth
     {
         string GenerateJwtToken(Account account);
         string HashPassword(string password);
+        string GenerateRefreshToken();
     }
-}
+} 
