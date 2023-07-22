@@ -12,7 +12,7 @@ namespace MoonBussiness.Interface
         Task<AccountResponse> GetByName(string name);
         Task<AccountResponse> GetById(Guid id);
         Task<AccountResponse> Add(CreateAccountRequest accountRequest);
-        Pagination<AccountResponse> GetAllAccount(int currentPage, int pageSize);
+        Pagination<AccountResponse> GetAllAccount(int currentPage, int pageSize, string? searchName = null);
         AccountResponse PatchAccount(Guid id, JsonPatchDocument<Account> patchDocument);
         Task DeleteAccount(Guid id);
         Task<int> DeleteAccountsAsync(List<Guid> accountIds);

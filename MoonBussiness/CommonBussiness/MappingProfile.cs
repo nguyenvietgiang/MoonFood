@@ -24,9 +24,8 @@ namespace MoonBussiness.CommonBussiness
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => true));
 
-            CreateMap<BookingRequest, Booking>()
-               .ForMember(dest => dest.Id, opt => opt.Ignore())
-               .ForMember(dest => dest.Status, opt => opt.MapFrom(src => true));
+            CreateMap<Booking, BookingResponse>(); 
+
         }
     }
 }

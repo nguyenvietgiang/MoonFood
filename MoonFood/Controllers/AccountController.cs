@@ -92,9 +92,9 @@ namespace MoonFood.Controllers
         /// </summary>
         [HttpGet("get-all")]
         [Authorize(Roles = "Admin,Manager")]
-        public IActionResult GetAccounts(int currentPage =1, int pageSize = 20)
+        public IActionResult GetAccounts(int currentPage =1, int pageSize = 20, string search = null)
         {
-            var pagination = _accountRepository.GetAllAccount(currentPage, pageSize);
+            var pagination = _accountRepository.GetAllAccount(currentPage, pageSize, search);
             return Ok(pagination);
         }
 

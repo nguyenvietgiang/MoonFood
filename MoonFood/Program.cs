@@ -8,6 +8,7 @@ using MoonBussiness.CommonBussiness.Auth;
 using MoonBussiness.Interface;
 using MoonBussiness.Repository;
 using MoonDataAccess;
+using Syncfusion.Licensing;
 using System.Reflection;
 using System.Text;
 
@@ -58,10 +59,13 @@ options.UseNpgsql(builder.Configuration.GetConnectionString("ApiCodeFirst")));
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
+SyncfusionLicenseProvider.RegisterLicense("MTQwNUAzMTM4MmUzNDJlMzBGT29sdENza2kyME1jUHpPNVd5enVXY1AvNVZ1SVdPQlVMNUE4R1c1M0FvPQ==");
+
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IEmailRepository, EmailRepository>();
 builder.Services.AddScoped<ITableRepository, TableRepository>();
+builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 
 builder.Services.AddCors(options =>
 {

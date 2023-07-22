@@ -8,6 +8,7 @@ using MoonModels;
 using MoonModels.DTO.RequestDTO;
 using MoonModels.DTO.ResponseDTO;
 using MoonModels.Paging;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace MoonBussiness.Repository
 {
@@ -60,17 +61,28 @@ namespace MoonBussiness.Repository
             return _mapper.Map<AccountResponse>(account);
         }
 
-       
-        public Pagination<AccountResponse> GetAllAccount(int currentPage, int pageSize)
+
+        public Pagination<AccountResponse> GetAllAccount(int currentPage, int pageSize, string? searchName = null)
         {
-            var totalRecords = _context.Accounts.Count();
-            var accounts = _context.Accounts
+            IQueryable<Account> query = _context.Accounts;
+            if (!string.IsNullOrEmpty(searchName))
+            {
+                query = query.AsEnumerable()
+                    .Where(account =>
+                        account.Name.Contains(searchName, StringComparison.OrdinalIgnoreCase) ||
+                        account.Email.Contains(searchName, StringComparison.OrdinalIgnoreCase)
+                    )
+                    .AsQueryable();
+            }
+            var totalRecords = query.Count(); 
+            var accounts = query
                 .Skip((currentPage - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
             var accountResponses = _mapper.Map<List<AccountResponse>>(accounts);
             return new Pagination<AccountResponse>(accountResponses, totalRecords, currentPage, pageSize);
         }
+
 
         public async Task DeleteAccount(Guid id)
         {

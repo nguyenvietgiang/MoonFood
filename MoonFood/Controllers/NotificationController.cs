@@ -12,6 +12,8 @@ namespace YourWebApi.Controllers
         private readonly FirestoreDb _firestoreDb;
         private const string CollectionName = "notifications";
 
+
+
         public NotificationsController()
         {
             var projectId = "moondb-e3b12"; 
@@ -23,7 +25,9 @@ namespace YourWebApi.Controllers
             }
             _firestoreDb = FirestoreDb.Create(projectId);
         }
-
+        /// <summary>
+        /// get notification 
+        /// </summary>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Notification>>> GetNotifications()
         {
