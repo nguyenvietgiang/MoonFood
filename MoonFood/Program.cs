@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
@@ -7,7 +9,9 @@ using MoonBussiness.CommonBussiness;
 using MoonBussiness.CommonBussiness.Auth;
 using MoonBussiness.Interface;
 using MoonBussiness.Repository;
+using MoonBussiness.Validator;
 using MoonDataAccess;
+using MoonModels.DTO.RequestDTO;
 using Syncfusion.Licensing;
 using System.Reflection;
 using System.Text;
@@ -20,8 +24,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-
+builder.Services.AddControllers()
+        .AddFluentValidation(fv => fv.ImplicitlyValidateChildProperties = true);
 builder.Services.AddControllers().AddNewtonsoftJson();
 
 builder.Services.AddSwaggerGen(c =>
@@ -66,6 +70,10 @@ builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IEmailRepository, EmailRepository>();
 builder.Services.AddScoped<ITableRepository, TableRepository>();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+builder.Services.AddScoped<IStatisticalRepositpry, StatisticalRepository>();
+
+builder.Services.AddTransient<IValidator<CreateAccountRequest>, CreateAccountRequestValidator>();
+builder.Services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
 
 builder.Services.AddCors(options =>
 {

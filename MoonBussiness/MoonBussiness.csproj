@@ -9,11 +9,13 @@
   <ItemGroup>
     <Folder Include="FileUploads\" />
     <Folder Include="Template\ExcelTemplate\" />
+    <Folder Include="Template\PDFTemplate\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="FirebaseAdmin" Version="2.0.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="MailKit" Version="3.4.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.16" />
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="7.0.9" />
