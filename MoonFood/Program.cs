@@ -71,9 +71,11 @@ builder.Services.AddScoped<IEmailRepository, EmailRepository>();
 builder.Services.AddScoped<ITableRepository, TableRepository>();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IStatisticalRepositpry, StatisticalRepository>();
+builder.Services.AddScoped<IExelRepository, ExelRepository>();
 
 builder.Services.AddTransient<IValidator<CreateAccountRequest>, CreateAccountRequestValidator>();
 builder.Services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
+builder.Services.AddTransient<IValidator<ChangePassword>, ChangePasswordValidator>();
 
 builder.Services.AddCors(options =>
 {

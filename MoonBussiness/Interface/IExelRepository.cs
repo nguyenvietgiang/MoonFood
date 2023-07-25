@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace MoonBussiness.Interface
 {
-    internal interface IExelRepository 
+    public interface IExelRepository 
     {
+        byte[] GetExcelTemplate(string templateName);
     }
 }

@@ -2,6 +2,8 @@
 using Google.Cloud.Firestore;
 using Google.Apis.Auth.OAuth2;
 using FirebaseAdmin.Messaging;
+using static Azure.Core.HttpHeader;
+using Google.Cloud.Firestore.V1;
 
 namespace YourWebApi.Controllers
 {
@@ -14,10 +16,10 @@ namespace YourWebApi.Controllers
 
 
 
-        public NotificationsController()
+        public NotificationsController(IWebHostEnvironment env)
         {
-            var projectId = "moondb-e3b12"; 
-            var pathToConfigJson = "MoonFood\\MoonBussiness\\CommonBussiness\\FirebaseSdk\\moondb-e3b12-firebase-adminsdk-w0a8n-339fa17c8b.json";
+            var projectId = "moondb-e3b12";
+            var pathToConfigJson = env.ContentRootPath + "/Common/FirebaseSdk/moondb-e3b12-firebase-adminsdk-w0a8n-339fa17c8b.json";
             GoogleCredential credentials;
             using (var stream = new FileStream(pathToConfigJson, FileMode.Open, FileAccess.Read))
             {

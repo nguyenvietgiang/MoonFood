@@ -25,4 +25,9 @@
     <ProjectReference Include="..\MoonBussiness\MoonBussiness.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Common\" />
+    <Folder Include="Template\PDFTemplate\" />
+  </ItemGroup>
+
 </Project>

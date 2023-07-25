@@ -8,8 +8,6 @@
 	
   <ItemGroup>
     <Folder Include="FileUploads\" />
-    <Folder Include="Template\ExcelTemplate\" />
-    <Folder Include="Template\PDFTemplate\" />
   </ItemGroup>
 
   <ItemGroup>
