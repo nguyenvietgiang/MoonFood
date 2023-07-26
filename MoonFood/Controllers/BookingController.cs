@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MoonBussiness.Interface;
+using MoonBussiness.Repository;
 using MoonModels.DTO.RequestDTO;
 
 namespace MoonFood.Controllers
@@ -70,6 +71,63 @@ namespace MoonFood.Controllers
             var bookings = _bookingRepository.GetBooking(currentPage, pageSize);
             return Ok(bookings);
         }
+
+        /// <summary>
+        /// get booking history by table id  - admin,  manager
+        /// </summary>
+        [HttpGet("table-history")]
+        [Authorize(Roles = "Admin,Manager")]
+        public async Task<IActionResult> GetBookingsForTable(Guid tableId)
+        {
+            try
+            {
+                var bookings = await _bookingRepository.GetBookingsForTable(tableId);
+                return Ok(bookings);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Failed to retrieve bookings."+ex);
+            }
+        }
+
+        /// <summary>
+        /// get booking history for current user  
+        /// </summary>
+        [HttpGet("my-history")]
+        [Authorize]
+        public async Task<IActionResult> GetMyBooking() 
+        {
+            var AccountId = GetUserIdFromClaim();
+            try
+            {
+                var bookings = await _bookingRepository.GetMyBookings(AccountId);
+                return Ok(bookings);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Failed to retrieve bookings." + ex);
+            }
+        }
+
+        /// <summary>
+        /// get booking history by username  - admin,  manager
+        /// </summary>
+        [HttpGet("user-history")]
+        [Authorize(Roles = "Admin,Manager")]
+        public async Task<IActionResult> GetBookingsForUser(string username)
+        {
+            try
+            {
+                var bookings = await _bookingRepository.GetBookingsForUser(username);
+                return Ok(bookings);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Failed to retrieve bookings." + ex);
+            }
+        }
+
+
     }
 }
 

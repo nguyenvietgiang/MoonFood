@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MoonBussiness.CommonBussiness;
 using MoonBussiness.CommonBussiness.Auth;
+using MoonBussiness.CommonBussiness.Dapper;
 using MoonBussiness.Interface;
 using MoonBussiness.Repository;
 using MoonBussiness.Validator;
@@ -64,6 +65,8 @@ options.UseNpgsql(builder.Configuration.GetConnectionString("ApiCodeFirst")));
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 SyncfusionLicenseProvider.RegisterLicense("MTQwNUAzMTM4MmUzNDJlMzBGT29sdENza2kyME1jUHpPNVd5enVXY1AvNVZ1SVdPQlVMNUE4R1c1M0FvPQ==");
+
+builder.Services.AddScoped<IDataAcess, DataAccess>();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();

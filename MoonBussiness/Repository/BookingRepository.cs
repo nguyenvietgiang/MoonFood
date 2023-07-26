@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using MoonBussiness.CommonBussiness.Dapper;
 using MoonBussiness.Interface;
 using MoonDataAccess;
 using MoonModels;
-using MoonModels.DTO.RequestDTO;
 using MoonModels.DTO.ResponseDTO;
 using MoonModels.Paging;
+using static Org.BouncyCastle.Math.EC.ECCurve;
+using System.Data;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace MoonBussiness.Repository
 {
@@ -14,10 +17,11 @@ namespace MoonBussiness.Repository
     {
         private readonly DataContext _dbContext;
         private readonly IMapper _mapper;
-
-        public BookingRepository(DataContext dbContext, IMapper mapper)
+        private readonly IDataAcess _dataAccess;
+        public BookingRepository(DataContext dbContext, IMapper mapper, IDataAcess dataAccess)
         {
             _dbContext = dbContext;
+            _dataAccess = dataAccess;
             _mapper = mapper;
         }
         public BookingResponse AddBooking(Guid AccountId, Guid tableId)
@@ -39,7 +43,7 @@ namespace MoonBussiness.Repository
             return _mapper.Map<BookingResponse>(booking);
         }
 
-        public async Task DeleteBooking(Guid id) 
+        public async Task DeleteBooking(Guid id)
         {
             var booking = await _dbContext.Bookings.FirstOrDefaultAsync(b => b.Id == id);
             if (booking != null)
@@ -60,12 +64,50 @@ namespace MoonBussiness.Repository
             var bookingResponses = _mapper.Map<List<BookingResponse>>(booking);
             return new Pagination<BookingResponse>(bookingResponses, totalRecords, currentPage, pageSize);
         }
- 
+
 
         public async Task<BookingResponse> GetBookingByIdAsync(Guid id)
         {
             var booking = await _dbContext.Bookings.FirstOrDefaultAsync(b => b.Id == id);
-            return _mapper.Map<BookingResponse>(booking); ;
+            return _mapper.Map<BookingResponse>(booking);
+        }
+
+        public async Task<List<BookingResponse>> GetBookingsForTable(Guid tableId)
+        {
+            // postgre sẽ tự tìm theo chữ cái viết thường
+            string query = "SELECT * FROM \"Bookings\" WHERE \"TableId\" = @TableId;";
+            var parameters = new { TableId = tableId };
+            var bookings = await _dataAccess.GetData<Booking, dynamic>(query, parameters);
+            var bookingResponses = _mapper.Map<List<BookingResponse>>(bookings.ToList());
+            return bookingResponses;
+        }
+
+        public async Task<List<BookingResponse>> GetBookingsForUser(string username)
+        {
+            string query = @"
+               SELECT 
+                b.*, 
+                ba.*
+               FROM 
+                ""Bookings"" b
+                INNER JOIN 
+                   ""Accounts"" ba ON b.""AccountId"" = ba.""Id""
+                WHERE 
+                ba.""Name"" = @Username;
+             ";
+            var parameters = new { Username = username };
+            var bookings = await _dataAccess.GetData<Booking, dynamic>(query, parameters);
+            var bookingResponses = _mapper.Map<List<BookingResponse>>(bookings);
+            return bookingResponses;
+        }
+
+        public async Task<List<BookingResponse>> GetMyBookings(Guid userId)
+        {
+            string query = "SELECT * FROM \"Bookings\" WHERE \"AccountId\" = @AccountId;";
+            var parameters = new { AccountId = userId }; 
+            var bookings = await _dataAccess.GetData<Booking, dynamic>(query, parameters);
+            var bookingResponses = _mapper.Map<List<BookingResponse>>(bookings.ToList());
+            return bookingResponses;
         }
 
         private void UpdateTableStatus(Guid tableId, bool status)
