@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <Folder Include="Common\" />
+    <Folder Include="file-uploads\" />
     <Folder Include="Template\PDFTemplate\" />
   </ItemGroup>
 

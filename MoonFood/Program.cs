@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using MoonBussiness.CommonBussiness;
 using MoonBussiness.CommonBussiness.Auth;
 using MoonBussiness.CommonBussiness.Dapper;
+using MoonBussiness.CommonBussiness.File;
 using MoonBussiness.Interface;
 using MoonBussiness.Repository;
 using MoonBussiness.Validator;
@@ -69,12 +70,15 @@ SyncfusionLicenseProvider.RegisterLicense("MTQwNUAzMTM4MmUzNDJlMzBGT29sdENza2kyM
 builder.Services.AddScoped<IDataAcess, DataAccess>();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IFileService, FileService>();
+
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IEmailRepository, EmailRepository>();
 builder.Services.AddScoped<ITableRepository, TableRepository>();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IStatisticalRepositpry, StatisticalRepository>();
 builder.Services.AddScoped<IExelRepository, ExelRepository>();
+builder.Services.AddScoped<IFoodRepositorycs, FoodRepository>();
 
 builder.Services.AddTransient<IValidator<CreateAccountRequest>, CreateAccountRequestValidator>();
 builder.Services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
@@ -112,6 +116,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseStaticFiles();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+            Path.Combine(Directory.GetCurrentDirectory(), "file-uploads")),
+    RequestPath = "/file-uploads"
+});
 
 
 app.UseCors(MyAllowSpecificOrigins);
