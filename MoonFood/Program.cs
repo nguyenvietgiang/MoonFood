@@ -9,6 +9,7 @@ using MoonBussiness.CommonBussiness;
 using MoonBussiness.CommonBussiness.Auth;
 using MoonBussiness.CommonBussiness.Dapper;
 using MoonBussiness.CommonBussiness.File;
+using MoonBussiness.GraphQL;
 using MoonBussiness.Interface;
 using MoonBussiness.Repository;
 using MoonBussiness.Validator;
@@ -71,6 +72,10 @@ builder.Services.AddScoped<IDataAcess, DataAccess>();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IFileService, FileService>();
+
+// GrapQL
+builder.Services.AddScoped<FoodQuery>();
+builder.Services.AddGraphQLServer().AddQueryType<FoodQuery>();
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IEmailRepository, EmailRepository>();
@@ -137,5 +142,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapGraphQL("/graphql");
 app.Run();

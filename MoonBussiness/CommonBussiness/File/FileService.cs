@@ -14,21 +14,21 @@ namespace MoonBussiness.CommonBussiness.File
         public string SaveImage(IFormFile image, string host)
         {
             var validExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "file-uploads");
+            var uploadsFolder = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "file-uploads");
 
             if (!Directory.Exists(uploadsFolder))
             {
                 Directory.CreateDirectory(uploadsFolder);
             }
 
-            var fileExtension = Path.GetExtension(image.FileName);
+            var fileExtension = System.IO.Path.GetExtension(image.FileName);
             if (!validExtensions.Contains(fileExtension.ToLower()))
             {
                 throw new ArgumentException("File truyền vào phải là ảnh.");
             }
 
             var fileName = Guid.NewGuid().ToString() + fileExtension;
-            var filePath = Path.Combine(uploadsFolder, fileName);
+            var filePath = System.IO.Path.Combine(uploadsFolder, fileName);
 
             using (var stream = new FileStream(filePath, FileMode.Create))
             {

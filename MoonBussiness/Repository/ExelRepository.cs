@@ -11,11 +11,11 @@ namespace MoonBussiness.Repository
 
         public ExelRepository (IWebHostEnvironment env)
         {
-            _commonFolderPath = Path.Combine(env.ContentRootPath, "Template");
+            _commonFolderPath = System.IO.Path.Combine(env.ContentRootPath, "Template");
         }
         public byte[] GetExcelTemplate(string templateName)
         {
-            string templateFilePath = Path.Combine(_commonFolderPath, "ExcelTemplate", templateName + "Template.xlsx");
+            string templateFilePath = System.IO.Path.Combine(_commonFolderPath, "ExcelTemplate", templateName + "Template.xlsx");
 
             using (FileStream fileStream = new FileStream(templateFilePath, FileMode.Open, FileAccess.Read))
             {
