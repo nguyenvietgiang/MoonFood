@@ -29,6 +29,10 @@ namespace MoonBussiness.CommonBussiness
             CreateMap<CreateFoodRequest, Food>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => true));
-        }
+
+            CreateMap<ComboRequest, Combo>()
+             .ForMember(dest => dest.Id, opt => opt.Ignore())
+             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => true));
+    }
     }
 }

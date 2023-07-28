@@ -79,10 +79,13 @@ builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IStatisticalRepositpry, StatisticalRepository>();
 builder.Services.AddScoped<IExelRepository, ExelRepository>();
 builder.Services.AddScoped<IFoodRepositorycs, FoodRepository>();
+builder.Services.AddScoped<IComboRepository, ComboRepository>();
 
 builder.Services.AddTransient<IValidator<CreateAccountRequest>, CreateAccountRequestValidator>();
 builder.Services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
 builder.Services.AddTransient<IValidator<ChangePassword>, ChangePasswordValidator>();
+builder.Services.AddTransient<IValidator<CreateFoodRequest>, CreateFoodRequestValidator>();
+builder.Services.AddTransient<IValidator<ComboRequest>, ComboRequestValidator>();
 
 builder.Services.AddCors(options =>
 {
