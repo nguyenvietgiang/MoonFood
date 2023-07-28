@@ -73,9 +73,12 @@ builder.Services.AddScoped<IDataAcess, DataAccess>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IFileService, FileService>();
 
-// GrapQL
-builder.Services.AddScoped<FoodQuery>();
-builder.Services.AddGraphQLServer().AddQueryType<FoodQuery>();
+// GraphQL
+builder.Services.AddScoped<Query>();
+builder.Services.AddScoped<Mutation>();
+builder.Services.AddGraphQLServer()
+    .AddQueryType<Query>()
+    .AddMutationType<Mutation>();
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IEmailRepository, EmailRepository>();
