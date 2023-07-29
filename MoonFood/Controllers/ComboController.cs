@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MoonBussiness.Interface;
 using MoonModels.DTO.RequestDTO;
-using System.Data;
 
 namespace MoonFood.Controllers
 {

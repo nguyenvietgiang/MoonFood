@@ -88,6 +88,7 @@ builder.Services.AddScoped<IStatisticalRepositpry, StatisticalRepository>();
 builder.Services.AddScoped<IExelRepository, ExelRepository>();
 builder.Services.AddScoped<IFoodRepositorycs, FoodRepository>();
 builder.Services.AddScoped<IComboRepository, ComboRepository>();
+builder.Services.AddScoped<IOderRepository, OderRepository>();
 
 builder.Services.AddTransient<IValidator<CreateAccountRequest>, CreateAccountRequestValidator>();
 builder.Services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();

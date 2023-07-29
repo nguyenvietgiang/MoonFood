@@ -33,6 +33,18 @@ namespace MoonBussiness.CommonBussiness
             CreateMap<ComboRequest, Combo>()
              .ForMember(dest => dest.Id, opt => opt.Ignore())
              .ForMember(dest => dest.Status, opt => opt.MapFrom(src => true));
-    }
+
+            CreateMap<OderRequest, Order>()
+             .ForMember(dest => dest.Id, opt =>opt.Ignore())
+             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => true));
+
+            CreateMap<Order, OderResponse>();
+
+            CreateMap<OderItemRequest,OrderItem>()
+             .ForMember(dest => dest.Id, opt => opt.Ignore())
+             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => true));
+
+            CreateMap<OrderItem, OrderItemResponse>();
+        }
     }
 }
