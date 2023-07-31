@@ -15,18 +15,29 @@ using MoonBussiness.Repository;
 using MoonBussiness.Validator;
 using MoonDataAccess;
 using MoonModels.DTO.RequestDTO;
+using Serilog.Events;
+using Serilog;
 using Syncfusion.Licensing;
 using System.Reflection;
 using System.Text;
+using Serilog.Formatting.Json;
 
 var builder = WebApplication.CreateBuilder(args);
-
+//ghi log vào file
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Error) 
+    .Enrich.FromLogContext()
+    .WriteTo.File(new JsonFormatter(), "logs/log.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 // Add services to the container.
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Logging.AddSerilog();
+builder.Services.AddLogging();
 builder.Services.AddControllers()
         .AddFluentValidation(fv => fv.ImplicitlyValidateChildProperties = true);
 builder.Services.AddControllers().AddNewtonsoftJson();

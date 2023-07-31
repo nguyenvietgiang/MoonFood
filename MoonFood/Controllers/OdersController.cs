@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MoonBussiness.Interface;
-using MoonBussiness.Repository;
 using MoonModels.DTO.RequestDTO;
-using System.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MoonFood.Controllers
 {
@@ -18,6 +16,9 @@ namespace MoonFood.Controllers
             _oderRepository = oderRepository;
         }
 
+        /// <summary>
+        /// create new Oder
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> CreateOder([FromForm] OderRequest oderRequest)
         {
@@ -32,7 +33,11 @@ namespace MoonFood.Controllers
             }
         }
 
+        /// <summary>
+        /// check oder  - admin,  manager
+        /// </summary>
         [HttpGet]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult GetOders(int currentPage = 1, int pageSize = 10)
         {
             var bookings = _oderRepository.GetOder(currentPage, pageSize);

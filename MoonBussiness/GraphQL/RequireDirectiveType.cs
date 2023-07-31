@@ -1,7 +1,7 @@
 ﻿
 namespace MoonBussiness.GraphQL
 {
-    public class RequireDirectiveType : DirectiveType
+    public class RequireDirectiveType 
     {
       
     }

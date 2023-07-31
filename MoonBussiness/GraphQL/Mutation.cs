@@ -16,5 +16,11 @@ namespace MoonBussiness.GraphQL
         {
             return await _accountRepository.Add(accountRequest);
         }
+
+        public async Task<LoginResponse> Login(LoginRequest loginRequest)
+        {
+            return _accountRepository.Login(loginRequest);
+        }
+
     }
 }
