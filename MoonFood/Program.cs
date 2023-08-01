@@ -21,17 +21,20 @@ using Syncfusion.Licensing;
 using System.Reflection;
 using System.Text;
 using Serilog.Formatting.Json;
+using Google.Api;
+using MoonFood.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 //ghi log vào file
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Debug()
-    .MinimumLevel.Override("Microsoft", LogEventLevel.Error) 
-    .Enrich.FromLogContext()
-    .WriteTo.File(new JsonFormatter(), "logs/log.txt", rollingInterval: RollingInterval.Day)
-    .CreateLogger();
+//Log.Logger = new LoggerConfiguration()
+//    .MinimumLevel.Debug()
+//    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning) 
+//    .Enrich.FromLogContext()
+//    .WriteTo.File(new JsonFormatter(), "logs/log.txt", rollingInterval: RollingInterval.Day)
+//    .CreateLogger();
 // Add services to the container.
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+var connectString = builder.Configuration.GetConnectionString("ApiCodeFirst");
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -41,7 +44,7 @@ builder.Services.AddLogging();
 builder.Services.AddControllers()
         .AddFluentValidation(fv => fv.ImplicitlyValidateChildProperties = true);
 builder.Services.AddControllers().AddNewtonsoftJson();
-
+builder.Services.AddMemoryCache();
 builder.Services.AddSwaggerGen(c =>
 {
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -73,8 +76,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddDbContext<DataContext>(options =>
-options.UseNpgsql(builder.Configuration.GetConnectionString("ApiCodeFirst")));
-
+options.UseNpgsql(connectString));
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 SyncfusionLicenseProvider.RegisterLicense("MTQwNUAzMTM4MmUzNDJlMzBGT29sdENza2kyME1jUHpPNVd5enVXY1AvNVZ1SVdPQlVMNUE4R1c1M0FvPQ==");
@@ -90,6 +92,9 @@ builder.Services.AddScoped<Mutation>();
 builder.Services.AddGraphQLServer()
     .AddQueryType<Query>()
     .AddMutationType<Mutation>();
+
+builder.Services.AddScoped<MiddlewareExceptionHandling>();
+builder.Services.AddScoped<MiddlewareCaching>();
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IEmailRepository, EmailRepository>();
@@ -128,9 +133,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             ValidIssuer = "moonfood2023",
             ValidAudience = "my-audience",
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("my-secret-key-123"))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("this is my custom Secret key for authentication"))
         };
     });
+
+builder.Services.AddHealthChecks().AddNpgSql(connectString);
+builder.Services.AddHealthChecksUI().AddInMemoryStorage();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -157,5 +165,11 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseMiddleware<MiddlewareExceptionHandling>();
+//app.UseMiddleware<MiddlewareCaching>();
 app.MapGraphQL("/graphql");
+app.MapHealthChecks("/healthcheck");
+app.MapHealthChecksUI();
+
 app.Run();

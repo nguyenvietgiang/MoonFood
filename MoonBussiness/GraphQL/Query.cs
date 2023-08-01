@@ -1,4 +1,5 @@
-﻿using MoonBussiness.Interface;
+﻿using HotChocolate.AspNetCore.Authorization;
+using MoonBussiness.Interface;
 using MoonModels;
 using MoonModels.DTO.ResponseDTO;
 using MoonModels.Paging;
@@ -21,10 +22,13 @@ namespace MoonBussiness.GraphQL
             return page;
         }
         // get all account
+        [Authorize]
         public Pagination<AccountResponse> GetAccounts(int currentPage, int pageSize)
         {
             var page = accountRepository.GetAllAccount(currentPage, pageSize);
             return page;
         }
+
+        
     }
 }
