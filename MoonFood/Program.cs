@@ -23,6 +23,7 @@ using System.Text;
 using Serilog.Formatting.Json;
 using Google.Api;
 using MoonFood.Middlewares;
+using MoonFood.Common.RedisCache;
 
 var builder = WebApplication.CreateBuilder(args);
 //ghi log vào file
@@ -44,7 +45,9 @@ builder.Services.AddLogging();
 builder.Services.AddControllers()
         .AddFluentValidation(fv => fv.ImplicitlyValidateChildProperties = true);
 builder.Services.AddControllers().AddNewtonsoftJson();
+//cache
 builder.Services.AddMemoryCache();
+builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSwaggerGen(c =>
 {
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -93,6 +96,9 @@ builder.Services.AddGraphQLServer()
     .AddQueryType<Query>()
     .AddMutationType<Mutation>();
 
+//redis cache
+builder.Services.AddScoped(typeof(ICacheService<>), typeof(CacheService<>));
+
 builder.Services.AddScoped<MiddlewareExceptionHandling>();
 builder.Services.AddScoped<MiddlewareCaching>();
 
@@ -136,6 +142,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("this is my custom Secret key for authentication"))
         };
     });
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+});
+
 
 builder.Services.AddHealthChecks().AddNpgSql(connectString);
 builder.Services.AddHealthChecksUI().AddInMemoryStorage();

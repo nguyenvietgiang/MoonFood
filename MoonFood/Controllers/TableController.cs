@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using MoonBussiness.Interface;
 using MoonModels.DTO.RequestDTO;
-using System.Data;
+using Microsoft.Extensions.Caching.Distributed;
+using System.Text.Json;
+using MoonModels.Paging;
+using MoonModels;
 
 namespace MoonFood.Controllers
 {
@@ -11,10 +14,12 @@ namespace MoonFood.Controllers
     public class TableController : BaseController
     {
         private readonly ITableRepository _tableRepository;
+        private readonly IDistributedCache _cache;
 
-        public TableController(ITableRepository tableRepository)
+        public TableController(ITableRepository tableRepository, IDistributedCache cache)
         {
             _tableRepository = tableRepository;
+            _cache = cache;
         }
 
         /// <summary>
@@ -46,10 +51,29 @@ namespace MoonFood.Controllers
         /// get all table - no auth
         /// </summary>
         [HttpGet]
-        public IActionResult GetTable(int currentPage = 1, int pageSize = 10)
+        public async Task<IActionResult> GetTable(int currentPage = 1, int pageSize = 10)
         {
-            var pagination = _tableRepository.GetTable(currentPage, pageSize);
-            return Ok(pagination);
+            string cacheKey = $"GetTable_{currentPage}_{pageSize}";
+            string cachedData = await _cache.GetStringAsync(cacheKey);
+
+            if (string.IsNullOrEmpty(cachedData))
+            {
+                var pagination = _tableRepository.GetTable(currentPage, pageSize);
+                var serializedData = JsonSerializer.Serialize(pagination);
+
+                await _cache.SetStringAsync(cacheKey, serializedData, new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(2) 
+                });
+
+                return Ok(pagination);
+            }
+            else
+            {
+                var pagination = JsonSerializer.Deserialize<Pagination<Table>>(cachedData);
+                return Ok(pagination);
+            }
         }
     }
 }
+
