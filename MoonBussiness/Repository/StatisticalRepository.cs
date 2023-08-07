@@ -1,6 +1,7 @@
 ﻿using MoonBussiness.Interface;
 using MoonDataAccess;
 using MoonModels;
+using MoonModels.DTO.ResponseDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,5 +44,39 @@ namespace MoonBussiness.Repository
             return statistics;
         }
 
+        public OrderStatistics GetOdersStatistics(DateTime? dateFilter = null)
+        {
+            var statistics = new OrderStatistics();
+
+            IQueryable<Order> ordersQuery = _dbContext.Orders;
+
+            // Apply date filter if provided
+            if (dateFilter.HasValue)
+            {
+                ordersQuery = ordersQuery.Where(o => o.CreatedAt.Date == dateFilter.Value.Date);
+            }
+
+            statistics.TotalSales = ordersQuery.Sum(o => o.OrderItems.Sum(oi => oi.TotalPrice));
+
+            // Find the most frequent UserId and FoodId
+            var mostFrequentUserId = ordersQuery
+                .SelectMany(o => o.OrderItems)
+                .GroupBy(oi => oi.OrderId)
+                .OrderByDescending(group => group.Count())
+                .Select(group => group.Key)
+                .FirstOrDefault();
+
+            var mostFrequentFoodId = ordersQuery
+                .SelectMany(o => o.OrderItems)
+                .GroupBy(oi => oi.FoodId)
+                .OrderByDescending(group => group.Count())
+                .Select(group => group.Key)
+                .FirstOrDefault();
+
+            statistics.MostFrequentUserId = (Guid)mostFrequentUserId;
+            statistics.MostFrequentFoodId = (Guid)mostFrequentFoodId;
+
+            return statistics;
+        }
     }
 }
