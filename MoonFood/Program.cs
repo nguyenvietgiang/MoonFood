@@ -24,6 +24,8 @@ using Serilog.Formatting.Json;
 using Google.Api;
 using MoonFood.Middlewares;
 using MoonFood.Common.RedisCache;
+using Hangfire;
+using Hangfire.MemoryStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 //ghi log vào file
@@ -128,7 +130,7 @@ builder.Services.AddCors(options =>
                              .AllowAnyHeader();
                    });
 });
-
+builder.Services.AddHangfire(configuration => configuration.UseMemoryStorage());
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -180,6 +182,8 @@ app.MapControllers();
 
 app.UseMiddleware<MiddlewareExceptionHandling>();
 //app.UseMiddleware<MiddlewareCaching>();
+app.UseHangfireServer();
+app.UseHangfireDashboard("/hangfile");
 app.MapGraphQL("/graphql");
 app.MapHealthChecks("/healthcheck");
 app.MapHealthChecksUI();

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Hangfire;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using MoonBussiness.Interface;
@@ -12,11 +13,12 @@ namespace MoonFood.Controllers
     [Route("api/v1/accounts")]
     public class AccountController : BaseController
     {
-        private readonly IAccountRepository _accountRepository; 
-
-        public AccountController(IAccountRepository accountRepository)
+        private readonly IAccountRepository _accountRepository;
+        private readonly IBackgroundJobClient _backgroundJobClient;
+        public AccountController(IAccountRepository accountRepository, IBackgroundJobClient backgroundJobClient)
         {
             _accountRepository = accountRepository;
+            _backgroundJobClient= backgroundJobClient;
         }
 
         /// <summary>
@@ -180,20 +182,17 @@ namespace MoonFood.Controllers
         [HttpPost("resetpassword")]
         public async Task<IActionResult> ResetPassword([FromBody] string email)
         {
-            var account = await _accountRepository.GetByEmail(email);
-            if (account == null)
+            if (string.IsNullOrEmpty(email))
             {
                 return BadRequest("Invalid Email.");
             }
-            bool isResetSuccessful = await _accountRepository.ResetPasswordAsync(email);
-            if (isResetSuccessful)
+            var account = await _accountRepository.GetByEmail(email);
+            if (account == null)
             {
-                return Ok("Reset password code is send to your email.");
+                return BadRequest("Account not found.");
             }
-            else
-            {
-                return BadRequest("Reset password successfully..");
-            }
+            _backgroundJobClient.Enqueue(() => _accountRepository.ResetPasswordAsync(email));
+            return Ok("A reset password code has been sent to your email.");
         }
 
         /// <summary>
