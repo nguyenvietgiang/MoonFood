@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MoonFoodClient</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MoonFoodClient.styles.css" asp-append-version="true" />
+    @*icon*@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-KyZXEAg3pMks1tvZHjR%2B40H2R4b%2BtPJABUVEXdXQmEIdkIbbVYUew+OrCXaRkfjU" crossorigin="anonymous">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <!-- Container wrapper -->
+            <div class="container">
+                <!-- Navbar brand -->
+                <a class="navbar-brand me-2" href="https://mdbgo.com/">
+                    <img src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp"
+                         height="16"
+                         alt="MDB Logo"
+                         loading="lazy"
+                         style="margin-top: -1px;" />
+                </a>
+
+                <!-- Toggle button -->
+                <button class="navbar-toggler"
+                        type="button"
+                        data-mdb-toggle="collapse"
+                        data-mdb-target="#navbarButtonsExample"
+                        aria-controls="navbarButtonsExample"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <!-- Collapsible wrapper -->
+                <div class="collapse navbar-collapse" id="navbarButtonsExample">
+                     <form class="d-flex input-group w-auto my-2">
+                       <input type="search"
+                               class="form-control rounded"
+                               placeholder="Search"
+                               aria-label="Search"
+                               aria-describedby="search-addon" />
+                        <button class="btn btn-primary" type="button" id="search-addon">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                    <div class="d-flex align-items-center">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a>
+                            </li>
+                            <li>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">Thực Đơn</a>
+                            </li>
+                            <li>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">Combo</a>
+                            </li>
+                            <li>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">Đặt Bàn</a>
+                            </li>
+                        </ul>
+                        <a class="btn btn-primary me-3" asp-area="" asp-controller="Auth" asp-action="Login">
+                            Đăng Nhập
+                        </a>
+                        <button type="button" class="btn btn-primary me-3">
+                            Đăng Ký
+                        </button>
+                    </div>
+                </div>
+                <!-- Collapsible wrapper -->
+            </div>
+            <!-- Container wrapper -->
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2023 - MoonFoodClient - <a asp-area="" asp-controller="Home" asp-action="Privacy">Chính sách bảo mật</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

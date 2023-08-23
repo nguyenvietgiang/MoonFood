@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoonDataAccess", "MoonDataA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoonBussiness", "MoonBussiness\MoonBussiness.csproj", "{9C90B06F-1C60-4487-BCC6-9AB38EAC0466}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoonTest", "MoonTest\MoonTest.csproj", "{9555CC5B-FC6A-485A-B680-66A218BFDC8B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoonTest", "MoonTest\MoonTest.csproj", "{9555CC5B-FC6A-485A-B680-66A218BFDC8B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoonFoodClient", "MoonFoodClient\MoonFoodClient.csproj", "{5D408E1A-95D2-4068-8C29-16E23AF92B0A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{9555CC5B-FC6A-485A-B680-66A218BFDC8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9555CC5B-FC6A-485A-B680-66A218BFDC8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9555CC5B-FC6A-485A-B680-66A218BFDC8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D408E1A-95D2-4068-8C29-16E23AF92B0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D408E1A-95D2-4068-8C29-16E23AF92B0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D408E1A-95D2-4068-8C29-16E23AF92B0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D408E1A-95D2-4068-8C29-16E23AF92B0A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
