@@ -26,6 +26,7 @@ using MoonFood.Middlewares;
 using MoonFood.Common.RedisCache;
 using Hangfire;
 using Hangfire.MemoryStorage;
+using MoonFood.Common.CommonModels;
 
 var builder = WebApplication.CreateBuilder(args);
 //ghi log vào file
@@ -153,6 +154,10 @@ builder.Services.AddStackExchangeRedisCache(options =>
 
 builder.Services.AddHealthChecks().AddNpgSql(connectString);
 builder.Services.AddHealthChecksUI().AddInMemoryStorage();
+// push notification
+builder.Services.Configure<OneSignalConfig>(builder.Configuration.GetSection("OneSignalConfig"));
+builder.Services.AddHttpClient();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
