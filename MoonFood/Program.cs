@@ -27,6 +27,7 @@ using MoonFood.Common.RedisCache;
 using Hangfire;
 using Hangfire.MemoryStorage;
 using MoonFood.Common.CommonModels;
+using Microsoft.AspNetCore.Mvc.Versioning;
 
 var builder = WebApplication.CreateBuilder(args);
 //ghi log vào file
@@ -157,6 +158,25 @@ builder.Services.AddHealthChecksUI().AddInMemoryStorage();
 // push notification
 builder.Services.Configure<OneSignalConfig>(builder.Configuration.GetSection("OneSignalConfig"));
 builder.Services.AddHttpClient();
+
+// api versioning
+builder.Services.AddApiVersioning(options =>
+{
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+    options.ReportApiVersions = true;
+    options.ApiVersionReader = ApiVersionReader.Combine(
+    // new QueryStringApiVersionReader("api-version"),
+     new HeaderApiVersionReader("x-version")//,
+                                            //new MediaTypeApiVersionReader("ver")
+    );
+});
+
+builder.Services.AddVersionedApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
+});
 
 var app = builder.Build();
 

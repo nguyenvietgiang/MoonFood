@@ -3,16 +3,17 @@ using Microsoft.AspNetCore.Mvc;
 using MoonBussiness.Interface;
 using MoonModels.DTO.ResponseDTO;
 
-namespace MoonFood.Controllers
+namespace MoonFood.Controllers.v1
 {
     [ApiController]
-    [Route("api/v1/statistical")]
+    [Route("api/v{version:apiVersion}/statistical")]
+    [ApiVersion("1.0")]
     [Authorize(Roles = "Manager")]
     public class StatisticalController : BaseController
     {
         private readonly IStatisticalRepositpry _statisticalRepositpry;
 
-        public StatisticalController (IStatisticalRepositpry statisticalRepositpry)
+        public StatisticalController(IStatisticalRepositpry statisticalRepositpry)
         {
             _statisticalRepositpry = statisticalRepositpry;
         }

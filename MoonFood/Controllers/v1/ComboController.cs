@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using MoonBussiness.Interface;
 using MoonModels.DTO.RequestDTO;
 
-namespace MoonFood.Controllers
+namespace MoonFood.Controllers.v1
 {
     [ApiController]
-    [Route("api/v1/menu/combo")]
+    [Route("api/v{version:apiVersion}/menu/combo")]
+    [ApiVersion("1.0")]
     public class ComboController : BaseController
     {
         private readonly IComboRepository _comboRepository;
@@ -23,7 +24,7 @@ namespace MoonFood.Controllers
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> CreateCombo([FromForm] ComboRequest comboRequest)
         {
-            try 
+            try
             {
                 string host = Gethost();
                 var createdCombo = await _comboRepository.CreateCombo(comboRequest, host);

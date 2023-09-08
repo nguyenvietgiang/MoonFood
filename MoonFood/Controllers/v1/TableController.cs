@@ -7,10 +7,11 @@ using System.Text.Json;
 using MoonModels.Paging;
 using MoonModels;
 
-namespace MoonFood.Controllers
+namespace MoonFood.Controllers.v1
 {
     [ApiController]
-    [Route("api/v1/tables")]
+    [Route("api/v{version:apiVersion}/tables")]
+    [ApiVersion("1.0")]
     public class TableController : BaseController
     {
         private readonly ITableRepository _tableRepository;
@@ -63,7 +64,7 @@ namespace MoonFood.Controllers
 
                 await _cache.SetStringAsync(cacheKey, serializedData, new DistributedCacheEntryOptions
                 {
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(2) 
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(2)
                 });
 
                 return Ok(pagination);

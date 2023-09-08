@@ -3,10 +3,11 @@ using MoonBussiness.Interface;
 using MoonModels.DTO.RequestDTO;
 using Microsoft.AspNetCore.Authorization;
 
-namespace MoonFood.Controllers
+namespace MoonFood.Controllers.v1
 {
     [ApiController]
-    [Route("api/v1/oder")]
+    [Route("api/v{version:apiVersion}/oder")]
+    [ApiVersion("1.0")]
     public class OdersController : BaseController
     {
         private readonly IOderRepository _oderRepository;

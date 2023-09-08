@@ -4,17 +4,18 @@ using MoonBussiness.Interface;
 using MoonModels;
 using MoonModels.DTO.RequestDTO;
 
-namespace MoonFood.Controllers
+namespace MoonFood.Controllers.v1
 {
     [ApiController]
-    [Route("api/v1/menu/foods")]
+    [Route("api/v{version:apiVersion}/menu/foods")]
+    [ApiVersion("1.0")]
     public class FoodController : BaseController
     {
         private readonly IFoodRepositorycs _foodRepositorycs;
 
         public FoodController(IFoodRepositorycs foodRepositorycs)
         {
-            _foodRepositorycs= foodRepositorycs;
+            _foodRepositorycs = foodRepositorycs;
         }
 
         /// <summary>

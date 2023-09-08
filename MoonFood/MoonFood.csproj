@@ -19,6 +19,8 @@
     <PackageReference Include="Google.Cloud.Firestore" Version="3.3.0" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.8.4" />
     <PackageReference Include="Hangfire.MemoryStorage" Version="1.8.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.9">
       <PrivateAssets>all</PrivateAssets>

@@ -8,14 +8,15 @@ using MoonFood.Common.CommonModels;
 using Microsoft.Extensions.Options;
 using System.Text;
 
-namespace YourWebApi.Controllers
+namespace MoonFood.Controllers.v1
 {
-    [Route("api/v1/notifications")]
+    [Route("api/v{version:apiVersion}/notifications")]
+    [ApiVersion("1.0")]
     [ApiController]
     public class NotificationsController : ControllerBase
     {
-    //    private readonly FirestoreDb _firestoreDb;
-    //    private const string CollectionName = "notifications";
+        //    private readonly FirestoreDb _firestoreDb;
+        //    private const string CollectionName = "notifications";
         private readonly OneSignalConfig _oneSignalConfig;
         private readonly IHttpClientFactory _httpClientFactory;
 
@@ -32,7 +33,7 @@ namespace YourWebApi.Controllers
             ////}
             ////_firestoreDb = FirestoreDb.Create(projectId);
 
-             _oneSignalConfig = oneSignalConfig.Value;
+            _oneSignalConfig = oneSignalConfig.Value;
             _httpClientFactory = httpClientFactory;
         }
         /// <summary>

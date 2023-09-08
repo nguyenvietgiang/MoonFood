@@ -3,18 +3,19 @@ using Microsoft.AspNetCore.Mvc;
 using MoonBussiness.Interface;
 using System.Data;
 
-namespace MoonFood.Controllers
+namespace MoonFood.Controllers.v1
 {
 
     [ApiController]
-    [Route("api/v1/excel-file")]
+    [Route("api/v{version:apiVersion}/excel-file")]
+    [ApiVersion("1.0")]
     [Authorize(Roles = "Admin, Manager")]
     public class FileExcelController : Controller
     {
-      private readonly IExelRepository _exelRepository;
+        private readonly IExelRepository _exelRepository;
         public FileExcelController(IExelRepository exelRepository)
         {
-            _exelRepository= exelRepository;
+            _exelRepository = exelRepository;
         }
 
         /// <summary>

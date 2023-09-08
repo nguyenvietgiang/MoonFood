@@ -7,10 +7,11 @@ using MoonModels;
 using MoonModels.DTO.RequestDTO;
 using MoonModels.DTO.ResponseDTO;
 
-namespace MoonFood.Controllers
+namespace MoonFood.Controllers.v1
 {
     [ApiController]
-    [Route("api/v1/accounts")]
+    [Route("api/v{version:apiVersion}/accounts")]
+    [ApiVersion("1.0")]
     public class AccountController : BaseController
     {
         private readonly IAccountRepository _accountRepository;
@@ -18,7 +19,7 @@ namespace MoonFood.Controllers
         public AccountController(IAccountRepository accountRepository, IBackgroundJobClient backgroundJobClient)
         {
             _accountRepository = accountRepository;
-            _backgroundJobClient= backgroundJobClient;
+            _backgroundJobClient = backgroundJobClient;
         }
 
         /// <summary>
@@ -94,7 +95,7 @@ namespace MoonFood.Controllers
         /// </summary>
         [HttpGet("get-all")]
         [Authorize(Roles = "Admin,Manager")]
-        public IActionResult GetAccounts(int currentPage =1, int pageSize = 20, string search = null)
+        public IActionResult GetAccounts(int currentPage = 1, int pageSize = 20, string search = null)
         {
             var pagination = _accountRepository.GetAllAccount(currentPage, pageSize, search);
             return Ok(pagination);
@@ -152,7 +153,7 @@ namespace MoonFood.Controllers
         /// </summary>
         [HttpPut("{id}/change-permistion")]
         [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> ChangeAccountType(Guid id,[FromBody] string newTypeInput)
+        public async Task<IActionResult> ChangeAccountType(Guid id, [FromBody] string newTypeInput)
         {
             var isTypeChanged = await _accountRepository.ChangeAccountTypeById(id, newTypeInput);
             if (isTypeChanged)

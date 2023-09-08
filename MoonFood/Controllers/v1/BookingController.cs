@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using MoonBussiness.Interface;
 
 
-namespace MoonFood.Controllers
+namespace MoonFood.Controllers.v1
 {
     [ApiController]
-    [Route("api/v1/booking")]
+    [Route("api/v{version:apiVersion}/booking")]
+    [ApiVersion("1.0")]
     public class BookingController : BaseController
     {
         private readonly IBookingRepository _bookingRepository;
@@ -28,7 +29,7 @@ namespace MoonFood.Controllers
                 var booking = _bookingRepository.AddBooking(AccountId, tableId);
                 return Ok(booking);
             }
-            catch 
+            catch
             {
                 return BadRequest("Đàn đã được đặt trước đó rồi!");
             }
@@ -56,7 +57,7 @@ namespace MoonFood.Controllers
         public async Task<IActionResult> DeleteBooking(Guid id)
         {
             await _bookingRepository.DeleteBooking(id);
-            return NoContent(); 
+            return NoContent();
         }
 
         /// <summary>
@@ -84,7 +85,7 @@ namespace MoonFood.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest("Failed to retrieve bookings."+ex);
+                return BadRequest("Failed to retrieve bookings." + ex);
             }
         }
 
@@ -93,7 +94,7 @@ namespace MoonFood.Controllers
         /// </summary>
         [HttpGet("my-history")]
         [Authorize]
-        public async Task<IActionResult> GetMyBooking() 
+        public async Task<IActionResult> GetMyBooking()
         {
             var AccountId = GetUserIdFromClaim();
             try
