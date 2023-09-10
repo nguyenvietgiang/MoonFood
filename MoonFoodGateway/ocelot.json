@@ -1,0 +1,46 @@
+// sử dụng postman với đường dẫn chuẩn để test ban đầu chạy vào / sẽ ko thầy gì, hãy vào thằng UpstreamPath
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/v1/menu/foods",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5109
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/menu/foods",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/tables",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5109
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/tables",
+      "UpstreamHttpMethod": [ "Get" ]
+    }
+    // API chatbot with django
+    //{
+    //  "DownstreamPathTemplate": "/chatbot",
+    //  "DownstreamScheme": "http",
+    //  "DownstreamHostAndPorts": [
+    //    {
+    //      "Host": "localhost",
+    //      "Port": 8888
+    //    }
+    //  ],
+    //  "UpstreamPathTemplate": "/chatbot",
+    //  "UpstreamHttpMethod": [ "Get" ]
+    //}
+  ],
+
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost/5045"
+  }
+}
