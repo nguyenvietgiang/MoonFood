@@ -1,4 +1,4 @@
-using FluentValidation;
+﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +30,7 @@ using MoonFood.Common.CommonModels;
 using Microsoft.AspNetCore.Mvc.Versioning;
 
 var builder = WebApplication.CreateBuilder(args);
-//ghi log v�o file
+//ghi log vào file
 //Log.Logger = new LoggerConfiguration()
 //    .MinimumLevel.Debug()
 //    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning) 
@@ -198,6 +198,8 @@ app.UseStaticFiles(new StaticFileOptions
 
 
 app.UseCors(MyAllowSpecificOrigins);
+// áp dụng api key ở đây nếu muốn dùng
+//app.UseMiddleware<ApiKeyMiddleware>("11102001201219722562005");
 
 app.UseHttpsRedirection();
 
