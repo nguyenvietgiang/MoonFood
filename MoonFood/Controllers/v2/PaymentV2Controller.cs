@@ -7,7 +7,7 @@ namespace MoonFood.Controllers.v2
     [Route("api/v{version:apiVersion}/payment")]
     [ApiVersion("2.0")]
     [Authorize]
-    public class PaymentController : ControllerBase
+    public class PaymentV2Controller : ControllerBase
     {
 
     }

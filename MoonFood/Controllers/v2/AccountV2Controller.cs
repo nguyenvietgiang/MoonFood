@@ -9,12 +9,12 @@ namespace MoonFood.Controllers.v2
     [ApiController]
     [Route("api/v{version:apiVersion}/accounts")]
     [ApiVersion("2.0")]
-    public class AccountController : BaseController
+    public class AccountV2Controller : BaseController
     {
         private readonly IAccountRepository _accountRepository;
         private readonly IBackgroundJobClient _backgroundJobClient;
 
-        public AccountController(IAccountRepository accountRepository, IBackgroundJobClient backgroundJobClient)
+        public AccountV2Controller(IAccountRepository accountRepository, IBackgroundJobClient backgroundJobClient)
         {
             _accountRepository = accountRepository;
             _backgroundJobClient = backgroundJobClient;
@@ -30,6 +30,8 @@ namespace MoonFood.Controllers.v2
             var pagination = _accountRepository.GetAllAccount(currentPage, pageSize, search);
             return Ok(pagination);
         }
+
+
     }
 }
 
