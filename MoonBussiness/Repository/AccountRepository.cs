@@ -64,24 +64,27 @@ namespace MoonBussiness.Repository
 
         public Pagination<AccountResponse> GetAllAccount(int currentPage, int pageSize, string? searchName = null)
         {
-            IQueryable<Account> query = _context.Accounts;
+            IQueryable<Account> query = _context.Accounts.AsNoTracking(); 
+
             if (!string.IsNullOrEmpty(searchName))
             {
-                query = query.AsEnumerable()
+                query = query
                     .Where(account =>
                         account.Name.Contains(searchName, StringComparison.OrdinalIgnoreCase) ||
                         account.Email.Contains(searchName, StringComparison.OrdinalIgnoreCase)
-                    )
-                    .AsQueryable();
+                    );
             }
-            var totalRecords = query.Count(); 
+
+            var totalRecords = query.Count();
             var accounts = query
                 .Skip((currentPage - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
+
             var accountResponses = _mapper.Map<List<AccountResponse>>(accounts);
             return new Pagination<AccountResponse>(accountResponses, totalRecords, currentPage, pageSize);
         }
+
 
 
         public async Task DeleteAccount(Guid id)

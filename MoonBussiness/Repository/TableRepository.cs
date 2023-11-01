@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using MoonBussiness.Interface;
 using MoonDataAccess;
 using MoonModels;
@@ -43,8 +44,8 @@ namespace MoonBussiness.Repository
 
         public Pagination<Table> GetTable(int currentPage, int pageSize)
         {
-            var totalRecords = _dbContext.Tables.Count();
-            var tables = _dbContext.Tables
+            var totalRecords = _dbContext.Tables.AsNoTracking().Count();
+            var tables = _dbContext.Tables.AsNoTracking()
                 .Skip((currentPage - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();

@@ -57,14 +57,16 @@ namespace MoonBussiness.Repository
 
         public Pagination<Food> GetMenu(int currentPage, int pageSize)
         {
-            var totalRecords = _dbContext.Foods.Count();
-            var menus = _dbContext.Foods 
+            var totalRecords = _dbContext.Foods.AsNoTracking().Count(); 
+
+            var menus = _dbContext.Foods.AsNoTracking()
                 .Skip((currentPage - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
 
             return new Pagination<Food>(menus, totalRecords, currentPage, pageSize);
         }
+
 
 
     }

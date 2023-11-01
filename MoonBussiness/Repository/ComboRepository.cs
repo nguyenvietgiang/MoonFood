@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using MoonBussiness.CommonBussiness.File;
 using MoonBussiness.Interface;
 using MoonDataAccess;
@@ -42,8 +43,8 @@ namespace MoonBussiness.Repository
 
         public Pagination<Combo> GetMenuCombo(int currentPage, int pageSize)
         {
-            var totalRecords = _dbContext.Combos.Count();
-            var menus = _dbContext.Combos
+            var totalRecords = _dbContext.Combos.AsNoTracking().Count();
+            var menus = _dbContext.Combos.AsNoTracking()
                 .Skip((currentPage - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
