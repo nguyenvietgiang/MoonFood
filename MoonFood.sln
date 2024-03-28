@@ -15,7 +15,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoonTest", "MoonTest\MoonTe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoonFoodGateway", "MoonFoodGateway\MoonFoodGateway.csproj", "{38A59A94-CB12-43D2-8ED5-5DB074F75112}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoonBenchMark", "MoonBenchMark\MoonBenchMark.csproj", "{6CB99897-40D2-456E-8445-7E3B985770DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoonBenchMark", "MoonBenchMark\MoonBenchMark.csproj", "{6CB99897-40D2-456E-8445-7E3B985770DF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Document", "Document", "{0F9F18FD-973C-499C-B840-D20591A3EC31}"
+	ProjectSection(SolutionItems) = preProject
+		APIsDocument.txt = APIsDocument.txt
+		Gateway.txt = Gateway.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

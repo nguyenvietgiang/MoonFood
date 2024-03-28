@@ -1,0 +1,2 @@
+﻿APIs sử dụng Dotnet 7 + Django 4.2
+Authen với JWT

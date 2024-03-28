@@ -1,0 +1,3 @@
+﻿Truy cập APIs GateWay bằng cách chạy các Services trước bao gồm ASP.NET và Python rồi sau đó chạy Gateway
+
+truy cập với :http://localhost:5045/ với các end point tương ứng.

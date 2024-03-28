@@ -24,6 +24,18 @@
       ],
       "UpstreamPathTemplate": "/api/v1/tables",
       "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "DownstreamPathTemplate": "/images/",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 8000
+        }
+      ],
+      "UpstreamPathTemplate": "/images/",
+      "UpstreamHttpMethod": [ "Get" ]
     }
     // API chatbot with django
     //{
