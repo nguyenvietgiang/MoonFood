@@ -21,6 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Document", "Document", "{0F
 	ProjectSection(SolutionItems) = preProject
 		APIsDocument.txt = APIsDocument.txt
 		Gateway.txt = Gateway.txt
+		ParitionTable.txt = ParitionTable.txt
 	EndProjectSection
 EndProject
 Global

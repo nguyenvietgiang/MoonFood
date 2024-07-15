@@ -1,0 +1,55 @@
+﻿Câu lệnh migrate ở dự án này: Cd vào dự án API sau đó dùng:
+dotnet ef migrations add DoSomeThing --project ../MoonDataAccess/MoonDataAccess.csproj --context DataContext
+
+dotnet ef database update --project ../MoonDataAccess/MoonDataAccess.csproj --context DataContext
+
+đối với Partition Table
+
+
+Ta làm tạm thời như sau: https://stackoverflow.com/questions/74029974/create-partition-table-in-entity-framework-for-postgres
+Sau khi create migrate ta thực hiện chỉnh sửa file Migrate vừa tạo trước khi update database
+
+
+Tham khảo đoạn code ở CreateParitionTable : Migration
+
+    migrationBuilder.CreateTable(
+                name: "Records",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    Name = table.Column<string>(nullable: true),
+                    CreatedAt = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Records", x => x.Id);
+                });
+
+            // Add partitioning commands here
+            migrationBuilder.Sql(@"
+            CREATE TABLE parent_table (
+                id SERIAL,
+                name TEXT,
+                created_at TIMESTAMP NOT NULL,
+                PRIMARY KEY (id, created_at)
+            ) PARTITION BY RANGE (created_at);
+
+            CREATE TABLE partition_table_2023 PARTITION OF parent_table
+            FOR VALUES FROM ('2023-01-01') TO ('2024-01-01');
+
+            CREATE TABLE partition_table_2024 PARTITION OF parent_table
+            FOR VALUES FROM ('2024-01-01') TO ('2025-01-01');
+        ");
+
+
+        và
+
+         migrationBuilder.Sql(@"
+            DROP TABLE IF EXISTS partition_table_2024;
+            DROP TABLE IF EXISTS partition_table_2023;
+            DROP TABLE IF EXISTS parent_table;
+        ");
+
+            migrationBuilder.DropTable(
+                name: "Records");

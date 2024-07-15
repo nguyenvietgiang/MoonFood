@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MoonModels;
+using MoonModels.Paging;
 
 namespace MoonDataAccess
 {
@@ -25,5 +26,6 @@ namespace MoonDataAccess
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<Record> Records { get; set; }
     }
 } 
